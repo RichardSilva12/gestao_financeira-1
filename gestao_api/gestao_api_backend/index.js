@@ -46,7 +46,7 @@ app.post("/api/transacoes", (req, res) => {
   );
 });
 
-// Excluir transação (opcional: só permite se o uid bater)
+// Excluir transação 
 app.delete("/api/transacoes/:id", (req, res) => {
   const uid = req.header("uid");
   if (!uid) return res.status(400).json({ error: "UID não informado" });
