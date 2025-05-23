@@ -61,6 +61,10 @@ app.delete("/api/transacoes/:id", (req, res) => {
   );
 });
 
-app.listen(5000, () => {
-  console.log("Backend rodando na porta 5000");
-});
+if(require.main === module) {
+  app.listen(5000, () => {
+    console.log("Backend rodando na porta 5000");
+  });
+}
+
+module.exports = app;
