@@ -25,19 +25,30 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+          cache-dependency-path: gestao_financeira/gestao_api/package-lock.json
+
 
       - name: Install dependencies (frontend)
-        working-directory: gestao_api
+        working-directory: gestao_financeira/gestao_api
         run: npm ci
 
       - name: Build frontend
-        working-directory: gestao_api
+        working-directory: gestao_financeira/gestao_api
         run: npm run build
 
+     
+      - name: Use Node.js for backend ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: gestao_financeira/gestao_api/gestao_api_backend/package-lock.json
+
       - name: Install dependencies (backend)
-        working-directory: gestao_api/gestao_api_backend
+        working-directory: gestao_financeira/gestao_api/gestao_api_backend
         run: npm ci
 
       - name: Run backend tests
-        working-directory: gestao_api/gestao_api_backend
+        working-directory: gestao_financeira/gestao_api/gestao_api_backend
         run: npm test
+
