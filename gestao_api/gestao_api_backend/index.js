@@ -30,7 +30,8 @@ app.get("/api/transacoes", (req, res) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(rows);
   });
-});
+}); 
+
 
 // Adicionar transação
 app.post("/api/transacoes", (req, res) => {
