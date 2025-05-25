@@ -1,70 +1,73 @@
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");  
-const sqlite3 = require("sqlite3").verbose();
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import express from 'express';
+import mongoose from 'mongoose';
 
-const app = express(); 
+
+const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-const db = new sqlite3.Database(":memory:");
+// Conexão MongoDB - faça isso antes de usar o app
+mongoose.connect("mongodb+srv://gestao-victor-p2:Dqa3eH5nRBphjWBp@cluster0.isaityj.mongodb.net/gestao_financeira?retryWrites=true&w=majority")
+  .then(() => console.log('MongoDB conectado!'))
+  .catch(err => console.error('Erro na conexão MongoDB:', err));
 
-// Cria tabela de transações
-db.serialize(() => {
-  db.run(`CREATE TABLE transacoes (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    uid TEXT,
-    descricao TEXT,
-    valor REAL,
-    tipo TEXT,
-    data TEXT,
-    categoria TEXT
-  )`);
+// Definição do Schema e Modelo da transação
+const transacaoSchema = new mongoose.Schema({
+  uid: String,
+  descricao: String,
+  valor: Number,
+  tipo: String,
+  data: String,
+  categoria: String,
 });
+
+const Transacao = mongoose.model('Transacao', transacaoSchema);
+
+// Rotas usando Mongoose para consultar/criar/excluir dados
 
 // Listar transações de um usuário
-app.get("/api/transacoes", (req, res) => {
+app.get("/api/transacoes", async (req, res) => {
   const uid = req.header("uid");
   if (!uid) return res.status(400).json({ error: "UID não informado" });
-  db.all("SELECT * FROM transacoes WHERE uid = ?", [uid], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(rows);
-  });
-}); 
-
+  try {
+    const transacoes = await Transacao.find({ uid });
+    res.json(transacoes);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // Adicionar transação
-app.post("/api/transacoes", (req, res) => {
+app.post("/api/transacoes", async (req, res) => {
   const { uid, descricao, valor, tipo, data, categoria } = req.body;
   if (!uid) return res.status(400).json({ error: "UID não informado" });
-  db.run(
-    "INSERT INTO transacoes (uid, descricao, valor, tipo, data, categoria) VALUES (?, ?, ?, ?, ?, ?)",
-    [uid, descricao, valor, tipo, data, categoria],
-    function (err) {
-      if (err) return res.status(500).json({ error: err.message });
-      res.json({ id: this.lastID });
-    }
-  );
+  try {
+    const novaTransacao = new Transacao({ uid, descricao, valor, tipo, data, categoria });
+    const salva = await novaTransacao.save();
+    res.json({ id: salva._id });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-// Excluir transação 
-app.delete("/api/transacoes/:id", (req, res) => {
+// Excluir transação
+app.delete("/api/transacoes/:id", async (req, res) => {
   const uid = req.header("uid");
   if (!uid) return res.status(400).json({ error: "UID não informado" });
-  db.run(
-    "DELETE FROM transacoes WHERE id = ? AND uid = ?",
-    [req.params.id, uid],
-    function (err) {
-      if (err) return res.status(500).json({ error: err.message });
-      res.json({ deleted: this.changes });
-    }
-  );
+  try {
+    const resultado = await Transacao.deleteOne({ _id: req.params.id, uid });
+    res.json({ deleted: resultado.deletedCount });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-if(require.main === module) {
-  app.listen(5000, () => {
-    console.log("Backend rodando na porta 5000");
-  });
-}
+app.listen(5000, () => {
+  console.log("Backend rodando na porta 5000");
+});
 
-module.exports = app;
+// Exporta o app para testes ou outro uso
+export default app;
+

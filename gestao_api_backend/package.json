@@ -15,6 +15,11 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "mongodb": "^4.17.2",
+    "mongoose": "^8.15.0",
     "sqlite3": "^5.1.7"
-  }
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "devDependencies": {}
 }
