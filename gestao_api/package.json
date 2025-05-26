@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "react-scripts start",
-    "server": "cd gestao_api_backend && nodemon index.js",
+    "server": "cd ../gestao_api_backend && nodemon index.js",
     "start:all": "concurrently \"npm run server\" \"npm run dev\"",
     "dev": "vite",
     "build": "vite build",
