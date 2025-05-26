@@ -9,7 +9,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Conexão MongoDB - faça isso antes de usar o app
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect("mongodb+srv://gestao-victor-p2:Dqa3eH5nRBphjWBp@cluster0.isaityj.mongodb.net/gestao_financeira?retryWrites=true&w=majority")
   .then(() => console.log('MongoDB conectado!'))
   .catch(err => console.error('Erro na conexão MongoDB:', err));
 
