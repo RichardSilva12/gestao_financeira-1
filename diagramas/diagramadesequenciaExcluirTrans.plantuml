@@ -1,0 +1,14 @@
+@startuml Sequência - Excluir Transação
+
+actor Usuário
+participant "Componente Dashboard (React)" as Dashboard
+participant "Backend Express API" as Backend
+participant "MongoDB" as MongoDB
+
+Usuário -> Dashboard : Clica para excluir transação
+Dashboard -> Backend : DELETE /api/transacoes/:id com uid no header
+Backend -> MongoDB : remove transação correspondente
+MongoDB --> Backend : confirmação exclusão
+Backend --> Dashboard : {deleted: 1}
+Dashboard -> Usuário : Atualiza lista de transações
+@enduml

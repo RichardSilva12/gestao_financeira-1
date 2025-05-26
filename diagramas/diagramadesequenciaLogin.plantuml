@@ -1,0 +1,16 @@
+@startuml  Sequência - Login do Usuário
+
+actor Usuário
+participant "Componente Login (React)" as Login
+participant "Firebase Auth" as Firebase
+participant "Router" as Router
+
+Usuário -> Login : Preenche email e senha
+Login -> Firebase : signInWithEmailAndPassword(email, senha)
+Firebase --> Login : Resultado (sucesso ou erro)
+alt sucesso
+  Login -> Router : navegar("/dashboard")
+else erro
+  Login -> Usuário : Exibe mensagem de erro
+end
+@enduml
