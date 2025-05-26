@@ -180,7 +180,7 @@ const excluirTransacao = async (id) => {
                 <li key={t.id}>
                   <strong>{t.descricao}</strong> - {t.tipo === "despesa" ? "-" : "+"}R${" "}
                   {t.valor.toFixed(2)} | {t.categoria} | {new Date(t.data).toLocaleString()}
-                  <button className="botao-excluir" onClick={() => excluirTransacao(t.id)}>Excluir</button>
+                  <button className="botao-excluir" onClick={() => excluirTransacao(t._id)}>Excluir</button>
                 </li>
               ))
             )}
