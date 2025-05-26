@@ -13,3 +13,10 @@
   "test": "jest"
 }
  3 - npm test
+
+#instalar docker
+ 1 - instalar docker 
+ 2 - rodar docker 
+ 3 - reiniciar pc 
+ 
+``rodar projeto`` - docker compose up --build -d
