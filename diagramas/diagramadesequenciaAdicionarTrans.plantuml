@@ -1,0 +1,14 @@
+@startuml Sequência - Adicionar Transação
+
+actor Usuário
+participant "Componente Dashboard (React)" as Dashboard
+participant "Backend Express API" as Backend
+participant "MongoDB" as MongoDB
+
+Usuário -> Dashboard : Preenche dados da transação
+Dashboard -> Backend : POST /api/transacoes {uid, descricao, valor, ...}
+Backend -> MongoDB : salva nova transação
+MongoDB --> Backend : confirmação
+Backend --> Dashboard : {id: novaTransacaoId}
+Dashboard -> Usuário : Atualiza lista de transações
+@enduml

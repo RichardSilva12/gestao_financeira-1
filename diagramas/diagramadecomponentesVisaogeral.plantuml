@@ -1,0 +1,28 @@
+@startuml Diagrama de Componentes - Gestão Financeira
+
+package "Frontend" {
+  [Login Component] 
+  [Register Component]
+  [Dashboard Component]
+  [AppRoutes] 
+}
+
+package "Backend" {
+  [Express API]
+  [Transacoes Controller]
+  [MongoDB Database]
+}
+
+package "Firebase" {
+  [Firebase Authentication Service]
+}
+
+[Login Component] --> [Firebase Authentication Service] : Autenticação de usuário
+[Register Component] --> [Firebase Authentication Service]
+[Dashboard Component] --> [Express API] : Requisições CRUD
+[Express API] --> [MongoDB Database] : Persistência de dados
+[Login Component] --> [AppRoutes]
+[Register Component] --> [AppRoutes]
+[Dashboard Component] --> [AppRoutes]
+
+@enduml

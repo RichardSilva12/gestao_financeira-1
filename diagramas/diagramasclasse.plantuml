@@ -1,0 +1,45 @@
+@startuml Diagrama de Classes - Gestão Financeira
+
+class Usuario {
+  - uid: String
+  - email: String
+  - displayName: String
+  + autenticar()
+  + registrar()
+  + logout()
+}
+
+class Autenticacao {
+  + login(email: String, senha: String)
+  + registro(email: String, senha: String)
+  + verificarEstado(): Boolean
+}
+
+class Transacao {
+  - id: String
+  - uid: String
+  - descricao: String
+  - valor: Float
+  - tipo: String
+  - data: DateTime
+  - categoria: String
+  + criar()
+  + excluir()
+  + listarPorUsuario(uid: String)
+}
+
+class Dashboard {
+  - transacoes: List<Transacao>
+  - filtros: Map<String,String>
+  + adicionarTransacao(t: Transacao)
+  + excluirTransacao(id: String)
+  + filtrarTransacoes()
+  + carregarTransacoes()
+}
+
+Usuario "1" -- "1" Autenticacao : usa >
+Usuario "1" -- "0..*" Transacao : possui >
+Dashboard "1" ..> Transacao : gerencia >
+Dashboard "1" ..> Usuario : utiliza >
+
+@enduml

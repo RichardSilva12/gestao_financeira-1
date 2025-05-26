@@ -1,0 +1,16 @@
+@startuml Sequência - Cadastro do Usuário
+
+actor Usuário
+participant "Componente Register (React)" as Register
+participant "Firebase Auth" as Firebase
+participant "Router" as Router
+
+Usuário -> Register : Preenche email e senha
+Register -> Firebase : createUserWithEmailAndPassword(email, senha)
+Firebase --> Register : Resultado (sucesso ou erro)
+alt sucesso
+  Register -> Router : navegar("/dashboard") (pode implementar)
+else erro
+  Register -> Usuário : Exibe mensagem de erro
+end
+@enduml
