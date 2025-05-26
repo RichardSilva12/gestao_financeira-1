@@ -1,0 +1,18 @@
+
+services:
+  backend:
+    build: ./gestao_api_backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./gestao_api_backend:/app
+    environment:
+      - MONGO_URI=mongodb+srv://gestao-victor-p2:Dqa3eH5nRBphjWBp@cluster0.isaityj.mongodb.net/gestao_financeira?retryWrites=true&w=majority
+    dns:
+      - 8.8.8.8  
+
+  frontend:
+    build: ./gestao_api
+    ports:
+      - "3000:80"
+    # Sem volume para não sobrescrever a build estática

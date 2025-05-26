@@ -1,5 +1,27 @@
 {
+<<<<<<< HEAD
+  "name": "gestao_financeira",
+  "version": "1.0.0",
+  "description": "``/gestao_api_backend`` - backend do projeto api com o banco MongoDB\r ``/gestao_api`` - frontend do projeto - interfaces ..",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MatheusLeonardi/gestao_financeira.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/MatheusLeonardi/gestao_financeira/issues"
+  },
+  "homepage": "https://github.com/MatheusLeonardi/gestao_financeira#readme"
+=======
   "dependencies": {
     "dependences": "^0.0.1-security"
   }
+>>>>>>> 9d3ce13313d18eb13aa76c518e1e27b33652bbe9
 }
