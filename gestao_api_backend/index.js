@@ -9,7 +9,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Conexão MongoDB - faça isso antes de usar o app
-mongoose.connect("mongodb+srv://gestao-victor-p2:Dqa3eH5nRBphjWBp@cluster0.isaityj.mongodb.net/gestao_financeira?retryWrites=true&w=majority")
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB conectado!'))
   .catch(err => console.error('Erro na conexão MongoDB:', err));
 
@@ -64,7 +64,7 @@ app.delete("/api/transacoes/:id", async (req, res) => {
   }
 });
 
-app.listen(5000, () => {
+app.listen(5000, '0.0.0.0', () => {
   console.log("Backend rodando na porta 5000");
 });
 
