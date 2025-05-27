@@ -1,15 +1,31 @@
 const request = require('supertest');
-const app = require('../index.js'); // certifique-se de que o caminho está correto
+const mongoose = require('mongoose');
+const app = require('../index.js');
+
+let server;
+
+beforeAll((done) => {
+  // Inicia o servidor em uma porta alternativa para evitar conflitos
+  server = app.listen(5001, () => {
+    console.log('Servidor de testes rodando na porta 5001');
+    done();
+  });
+});
+
+afterAll(async () => {
+  await mongoose.connection.close(); // Fecha a conexão com o MongoDB
+  await server.close();              // Fecha o servidor Express
+});
 
 describe('GET /api/transacoes', () => {
   it('deve retornar erro se UID não for informado', async () => {
-    const res = await request(app).get('/api/transacoes');
+    const res = await request(server).get('/api/transacoes');
     expect(res.statusCode).toBe(400);
     expect(res.body).toEqual({ error: "UID não informado" });
   });
 
   it('deve retornar array de transações para UID válido', async () => {
-    const res = await request(app)
+    const res = await request(server)
       .get('/api/transacoes')
       .set('uid', '123');
     expect(res.statusCode).toBe(200);
@@ -19,7 +35,7 @@ describe('GET /api/transacoes', () => {
 
 describe('POST /api/transacoes', () => {
   it('deve retornar erro se UID não for informado', async () => {
-    const res = await request(app)
+    const res = await request(server)
       .post('/api/transacoes')
       .send({
         descricao: 'Teste',
@@ -33,7 +49,7 @@ describe('POST /api/transacoes', () => {
   });
 
   it('deve adicionar uma transação com sucesso', async () => {
-    const res = await request(app)
+    const res = await request(server)
       .post('/api/transacoes')
       .send({
         uid: '123',
@@ -46,21 +62,20 @@ describe('POST /api/transacoes', () => {
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty('id');
     expect(typeof res.body.id).toBe('string');
-    expect(res.body.id).toMatch(/^[a-f\d]{24}$/); // verifica se é ObjectId válido
+    expect(res.body.id).toMatch(/^[a-f\d]{24}$/);
   });
 });
 
 describe('DELETE /api/transacoes/:id', () => {
   it('deve retornar erro se UID não for informado', async () => {
-    const res = await request(app)
+    const res = await request(server)
       .delete('/api/transacoes/000000000000000000000001');
     expect(res.statusCode).toBe(400);
     expect(res.body).toEqual({ error: "UID não informado" });
   });
 
   it('deve deletar uma transação existente', async () => {
-    // Primeiro cria a transação
-    const postRes = await request(app)
+    const postRes = await request(server)
       .post('/api/transacoes')
       .send({
         uid: '123',
@@ -73,7 +88,7 @@ describe('DELETE /api/transacoes/:id', () => {
 
     const id = postRes.body.id;
 
-    const delRes = await request(app)
+    const delRes = await request(server)
       .delete(`/api/transacoes/${id}`)
       .set('uid', '123');
 
@@ -82,8 +97,8 @@ describe('DELETE /api/transacoes/:id', () => {
   });
 
   it('deve retornar deleted: 0 se a transação não existir', async () => {
-    const res = await request(app)
-      .delete('/api/transacoes/000000000000000000000000') // ID válido mas inexistente
+    const res = await request(server)
+      .delete('/api/transacoes/000000000000000000000000')
       .set('uid', '123');
 
     expect(res.statusCode).toBe(200);
