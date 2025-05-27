@@ -69,10 +69,12 @@ app.delete("/api/transacoes/:id", async (req, res) => {
   }
 });
 
-// Iniciar servidor
-app.listen(5000, () => {
-  console.log("Backend rodando na porta 5000");
-});
+// Iniciar servidor apenas se não estiver em ambiente de teste
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(5000, () => {
+    console.log("Backend rodando na porta 5000");
+  });
+}
 
 // Exportar para testes
 module.exports = app;
