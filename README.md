@@ -9,10 +9,7 @@
  1 - Instalar o pacote jest - npm install --save-dev jest
  2 - Instalar o pacote supertest - npm install --save-dev supertest
  3 - Instalar o pacote express - npm install express
- 4 - Colocar atalho para rodar os testes no package.json - "scripts": {
-                                                              "test": "jest"
-                                                           }
- 5 - npm test
+ 4 - npm test
 
 #Instalar docker
  1 - Instalar docker 
