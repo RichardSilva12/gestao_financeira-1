@@ -29,8 +29,10 @@ jobs:
       - name:  Instalar dependências
         run: npm install
 
-      - name: Dar permissão para executar o jest
-        run: chmod +x ./node_modules/.bin/jest
+      - name: Dar permissão para executar o jest e cross-env
+        run: |
+          chmod +x ./node_modules/.bin/jest
+          chmod +x ./node_modules/.bin/cross-env
 
       - name:  Rodar testes com Jest
         run: npm test
