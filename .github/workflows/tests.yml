@@ -33,5 +33,5 @@ jobs:
         run: chmod +x ./node_modules/.bin/jest
 
       - name:  Rodar testes com Jest
-        run: npx cross-env NODE_ENV=test jest --detectOpenHandles
+        run: npm test
           
