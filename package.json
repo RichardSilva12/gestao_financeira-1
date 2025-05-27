@@ -1,6 +1,6 @@
 {
   "name": "gestao_financeira",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "/gestao_api_backend - backend do projeto api com o banco MongoDB | /gestao_api - frontend do projeto - interfaces.",
   "main": "index.js",
   "scripts": {
