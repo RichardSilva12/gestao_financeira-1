@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import { getAuth, signOut } from "firebase/auth";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
 
@@ -141,7 +141,7 @@ function Dashboard({ user }) {
   return (
     <div className="dashboard">
       <h2>Olá, {user.displayName || user.email.split("@")[0]}!</h2>
-      
+      <br />
       <button onClick={handleLogout} className="botao-sair">
         Sair
       </button>
