@@ -1,24 +1,21 @@
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import express from 'express';
-import mongoose from 'mongoose';
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const mongoose = require('mongoose');
 
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// Conexão MongoDB - faça isso antes de usar o app
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+// Conexão com o MongoDB
+mongoose.connect("mongodb+srv://gestao-victor-p2:Dqa3eH5nRBphjWBp@cluster0.isaityj.mongodb.net/gestao_financeira?retryWrites=true&w=majority")
   .then(() => console.log('MongoDB conectado!'))
   .catch(err => console.error('Erro na conexão MongoDB:', err));
 
-// Definição do Schema e Modelo da transação
+// Schema e Modelo
 const transacaoSchema = new mongoose.Schema({
-  uid: String,
+  uid: { type: String, required: true }, // Firebase UID como identificador
   descricao: String,
   valor: Number,
   tipo: String,
@@ -28,12 +25,13 @@ const transacaoSchema = new mongoose.Schema({
 
 const Transacao = mongoose.model('Transacao', transacaoSchema);
 
-// Rotas usando Mongoose para consultar/criar/excluir dados
+// ------------------- ROTAS ------------------- //
 
-// Listar transações de um usuário
+// GET /api/transacoes - Listar por UID
 app.get("/api/transacoes", async (req, res) => {
   const uid = req.header("uid");
   if (!uid) return res.status(400).json({ error: "UID não informado" });
+
   try {
     const transacoes = await Transacao.find({ uid });
     res.json(transacoes);
@@ -42,35 +40,40 @@ app.get("/api/transacoes", async (req, res) => {
   }
 });
 
-// Adicionar transação
+// POST /api/transacoes - Criar nova
 app.post("/api/transacoes", async (req, res) => {
   const { uid, descricao, valor, tipo, data, categoria } = req.body;
   if (!uid) return res.status(400).json({ error: "UID não informado" });
+
   try {
     const novaTransacao = new Transacao({ uid, descricao, valor, tipo, data, categoria });
     const salva = await novaTransacao.save();
-    res.json({ id: salva._id });
+
+    res.json({ id: salva._id.toString() }); // <-- converte para string, compatível com testes
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// Excluir transação
+// DELETE /api/transacoes/:id - Remover por ID e UID
 app.delete("/api/transacoes/:id", async (req, res) => {
   const uid = req.header("uid");
+  const { id } = req.params;
   if (!uid) return res.status(400).json({ error: "UID não informado" });
+
   try {
-    const resultado = await Transacao.deleteOne({ _id: req.params.id, uid });
+    const resultado = await Transacao.deleteOne({ _id: id, uid });
     res.json({ deleted: resultado.deletedCount });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-app.listen(5000, '0.0.0.0', () => {
+// Iniciar servidor
+app.listen(5000, () => {
   console.log("Backend rodando na porta 5000");
 });
 
-// Exporta o app para testes ou outro uso
-export default app;
+// Exportar para testes
+module.exports = app;
 
