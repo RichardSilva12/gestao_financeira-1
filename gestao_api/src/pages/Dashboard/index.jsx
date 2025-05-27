@@ -1,16 +1,21 @@
 import { useEffect, useState } from "react";
+import { getAuth, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 import "./styles.css";
 
 function Dashboard({ user }) {
   const [abaAtiva, setAbaAtiva] = useState("adicionar");
-
   const [descricao, setDescricao] = useState("");
   const [valor, setValor] = useState("");
   const [tipo, setTipo] = useState("despesa");
   const [data, setData] = useState("");
   const [categoriaId, setCategoriaId] = useState("");
-
   const [transacoes, setTransacoes] = useState([]);
+  const [filtroTipo, setFiltroTipo] = useState("todos");
+  const [filtroCategoria, setFiltroCategoria] = useState("");
+
+  const auth = getAuth();
+  const navigate = useNavigate();
 
   const categoriasDespesa = [
     { id: 1, nome: "Alimentação" },
@@ -20,77 +25,76 @@ function Dashboard({ user }) {
   ];
 
   const categoriasReceita = [{ id: 10, nome: "Salário" }];
-
   const categorias = tipo === "receita" ? categoriasReceita : categoriasDespesa;
 
   const headersAuth = {
-  Authorization: user.accessToken,
-  "Content-Type": "application/json",
-  uid: user.uid, 
-};
+    Authorization: user.accessToken,
+    "Content-Type": "application/json",
+    uid: user.uid,
+  };
 
-const carregarTransacoes = async () => {
-  try {
-    const res = await fetch("http://localhost:5000/api/transacoes", {
-      headers: headersAuth,
-    });
-    const dados = await res.json();
-    setTransacoes(dados);
-  } catch (error) {
-    console.error("Erro ao carregar transações:", error);
-  }
-};
+  const carregarTransacoes = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/transacoes", {
+        headers: headersAuth,
+      });
+      const dados = await res.json();
+      setTransacoes(dados);
+    } catch (error) {
+      console.error("Erro ao carregar transações:", error);
+    }
+  };
 
   useEffect(() => {
     carregarTransacoes();
   }, []);
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  const novaTransacao = {
-    uid: user.uid, 
-    descricao,
-    valor: parseFloat(valor),
-    tipo,
-    data,
-    categoria: categorias.find((cat) => cat.id.toString() === categoriaId)?.nome || "",
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const novaTransacao = {
+      uid: user.uid,
+      descricao,
+      valor: parseFloat(valor),
+      tipo,
+      data,
+      categoria:
+        categorias.find((cat) => cat.id.toString() === categoriaId)?.nome || "",
+    };
+
+    try {
+      const res = await fetch("http://localhost:5000/api/transacoes", {
+        method: "POST",
+        headers: headersAuth,
+        body: JSON.stringify(novaTransacao),
+      });
+
+      if (res.ok) {
+        await carregarTransacoes();
+        setDescricao("");
+        setValor("");
+        setTipo("despesa");
+        setData("");
+        setCategoriaId("");
+      }
+    } catch (error) {
+      console.error("Erro ao adicionar transação:", error);
+    }
   };
 
-  try {
-    const res = await fetch("http://localhost:5000/api/transacoes", {
-      method: "POST",
-      headers: headersAuth,
-      body: JSON.stringify(novaTransacao),
-    });
+  const excluirTransacao = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/transacoes/${id}`, {
+        method: "DELETE",
+        headers: headersAuth,
+      });
 
-    if (res.ok) {
-      await carregarTransacoes();
-      setDescricao("");
-      setValor("");
-      setTipo("despesa");
-      setData("");
-      setCategoriaId("");
+      if (res.ok) {
+        await carregarTransacoes();
+      }
+    } catch (error) {
+      console.error("Erro ao excluir transação:", error);
     }
-  } catch (error) {
-    console.error("Erro ao adicionar transação:", error);
-  }
-};
-
-
-const excluirTransacao = async (id) => {
-  try {
-    const res = await fetch(`http://localhost:5000/api/transacoes/${id}`, {
-      method: "DELETE",
-      headers: headersAuth, 
-    });
-
-    if (res.ok) {
-      await carregarTransacoes();
-    }
-  } catch (error) {
-    console.error("Erro ao excluir transação:", error);
-  }
-};
+  };
 
   const hoje = new Date();
   const mesAtual = hoje.getMonth();
@@ -98,11 +102,11 @@ const excluirTransacao = async (id) => {
 
   const transacoesMes = transacoes.filter((t) => {
     const dataTransacao = new Date(t.data);
-    return dataTransacao.getMonth() === mesAtual && dataTransacao.getFullYear() === anoAtual;
+    return (
+      dataTransacao.getMonth() === mesAtual &&
+      dataTransacao.getFullYear() === anoAtual
+    );
   });
-
-  const [filtroTipo, setFiltroTipo] = useState("todos");
-  const [filtroCategoria, setFiltroCategoria] = useState("");
 
   const transacoesFiltradas = transacoesMes.filter((t) => {
     if (filtroTipo !== "todos" && t.tipo !== filtroTipo) return false;
@@ -113,41 +117,92 @@ const excluirTransacao = async (id) => {
   const totalReceitas = transacoesMes
     .filter((t) => t.tipo === "receita")
     .reduce((acc, t) => acc + t.valor, 0);
+
   const totalDespesas = transacoesMes
     .filter((t) => t.tipo === "despesa")
     .reduce((acc, t) => acc + t.valor, 0);
+
   const saldo = totalReceitas - totalDespesas;
 
   const categoriasUnicas = [
     ...new Set(transacoesMes.map((t) => t.categoria).filter((c) => c)),
   ];
 
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        navigate("/"); // Redireciona para a tela de login
+      })
+      .catch((error) => {
+        console.error("Erro ao deslogar:", error);
+      });
+  };
+
   return (
     <div className="dashboard">
-      <h2>Olá, {user.displayName || user.email.split('@')[0]}!</h2>
+      <h2>Olá, {user.displayName || user.email.split("@")[0]}!</h2>
+      
+      <button onClick={handleLogout} className="botao-sair">
+        Sair
+      </button>
 
       <div className="abas">
-        <button onClick={() => setAbaAtiva("adicionar")} className={abaAtiva === "adicionar" ? "ativo" : ""}>
+        <button
+          onClick={() => setAbaAtiva("adicionar")}
+          className={abaAtiva === "adicionar" ? "ativo" : ""}
+        >
           Adicionar Transação
         </button>
-        <button onClick={() => setAbaAtiva("visualizar")} className={abaAtiva === "visualizar" ? "ativo" : ""}>
+        <button
+          onClick={() => setAbaAtiva("visualizar")}
+          className={abaAtiva === "visualizar" ? "ativo" : ""}
+        >
           Visualizar Transações
         </button>
       </div>
 
       {abaAtiva === "adicionar" && (
         <form className="form" onSubmit={handleSubmit}>
-          <input type="text" placeholder="Descrição" value={descricao} onChange={(e) => setDescricao(e.target.value)} required />
-          <input type="number" placeholder="Valor" value={valor} onChange={(e) => setValor(e.target.value)} required />
-          <select value={tipo} onChange={(e) => { setTipo(e.target.value); setCategoriaId(""); }}>
+          <input
+            type="text"
+            placeholder="Descrição"
+            value={descricao}
+            onChange={(e) => setDescricao(e.target.value)}
+            required
+          />
+          <input
+            type="number"
+            placeholder="Valor"
+            value={valor}
+            onChange={(e) => setValor(e.target.value)}
+            required
+          />
+          <select
+            value={tipo}
+            onChange={(e) => {
+              setTipo(e.target.value);
+              setCategoriaId("");
+            }}
+          >
             <option value="despesa">Despesa</option>
             <option value="receita">Receita</option>
           </select>
-          <input type="datetime-local" value={data} onChange={(e) => setData(e.target.value)} required />
-          <select value={categoriaId} onChange={(e) => setCategoriaId(e.target.value)} required>
+          <input
+            type="datetime-local"
+            value={data}
+            onChange={(e) => setData(e.target.value)}
+            required
+          />
+          <select
+            value={categoriaId}
+            onChange={(e) => setCategoriaId(e.target.value)}
+            required
+          >
             <option value="">Selecione a categoria</option>
             {categorias.map((cat) => (
-              <option key={cat.id} value={cat.id}>{cat.nome}</option>
+              <option key={cat.id} value={cat.id}>
+                {cat.nome}
+              </option>
             ))}
           </select>
           <button type="submit">Adicionar</button>
@@ -158,16 +213,24 @@ const excluirTransacao = async (id) => {
         <div className="visualizar">
           <h3>Transações do mês - Relatório</h3>
           <div className="filtros">
-            <select value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)}>
+            <select
+              value={filtroTipo}
+              onChange={(e) => setFiltroTipo(e.target.value)}
+            >
               <option value="todos">Todos</option>
               <option value="receita">Receitas</option>
               <option value="despesa">Despesas</option>
             </select>
 
-            <select value={filtroCategoria} onChange={(e) => setFiltroCategoria(e.target.value)}>
+            <select
+              value={filtroCategoria}
+              onChange={(e) => setFiltroCategoria(e.target.value)}
+            >
               <option value="">Todas Categorias</option>
               {categoriasUnicas.map((cat, i) => (
-                <option key={i} value={cat}>{cat}</option>
+                <option key={i} value={cat}>
+                  {cat}
+                </option>
               ))}
             </select>
           </div>
@@ -178,9 +241,15 @@ const excluirTransacao = async (id) => {
             ) : (
               transacoesFiltradas.map((t) => (
                 <li key={t.id}>
-                  <strong>{t.descricao}</strong> - {t.tipo === "despesa" ? "-" : "+"}R${" "}
-                  {t.valor.toFixed(2)} | {t.categoria} | {new Date(t.data).toLocaleString()}
-                  <button className="botao-excluir" onClick={() => excluirTransacao(t._id)}>Excluir</button>
+                  <strong>{t.descricao}</strong> -{" "}
+                  {t.tipo === "despesa" ? "-" : "+"}R$ {t.valor.toFixed(2)} |{" "}
+                  {t.categoria} | {new Date(t.data).toLocaleString()}
+                  <button
+                    className="botao-excluir"
+                    onClick={() => excluirTransacao(t._id)}
+                  >
+                    Excluir
+                  </button>
                 </li>
               ))
             )}
