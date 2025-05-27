@@ -2,7 +2,7 @@
   "name": "gestao_api_backend",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
+  
   "scripts": {
     "test": "jest"
   },
@@ -19,7 +19,7 @@
     "sqlite3": "^5.1.7"
   },
   "directories": {
-    "test": "tests"
+    "test": "test"
   },
   "devDependencies": {
     "jest": "^29.7.0",

@@ -5,18 +5,22 @@
 
 
 #test 
-``/gestao_api_backend`` - entrar no backend 
- 1- instalar o pacote jest  - npm install --save-dev jest
- 2 - instalar o pacote suppertest - npm install --save-dev supertest
- 3 - instalar o pacote express - npm install express
- 2- "scripts": {
-  "test": "jest"
-}
- 3 - npm test
+``/gestao_api_backend`` - Entrar no backend - cd gestao_api_backend 
+ 1 - Instalar o pacote jest - npm install --save-dev jest
+ 2 - Instalar o pacote supertest - npm install --save-dev supertest
+ 3 - Instalar o pacote express - npm install express
+ 4 - Colocar atalho para rodar os testes no package.json - "scripts": {
+                                                              "test": "jest"
+                                                           }
+ 5 - npm test
 
-#instalar docker
- 1 - instalar docker 
- 2 - rodar docker 
- 3 - reiniciar pc 
+#Instalar docker
+ 1 - Instalar docker 
+ 2 - Rodar docker 
+ 3 - Reiniciar pc 
  
-``rodar projeto`` - docker compose up --build -d
+#rodar projeto usando docker - docker compose up --build -d
+
+
+
+testeee
