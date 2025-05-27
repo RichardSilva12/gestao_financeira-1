@@ -27,4 +27,4 @@ jobs:
         run: npm install
 
       - name:  Rodar testes com Jest
-        run: npx jest
+        run: ./node_modules/.bin/jest
