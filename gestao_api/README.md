@@ -35,7 +35,7 @@ O projeto inclui um `Dockerfile` que realiza o build da aplicação React e util
 
 ---
 
-## 🔧 Como Rodar o Projeto
+## 🔧 Como Rodar o Projeto frontend
 
 ### Executando localmente
 
