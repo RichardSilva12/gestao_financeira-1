@@ -36,6 +36,7 @@ docker run -p 5000:5000 gestao-backend
 cd gestao_api
 docker build -t gestao-frontend .
 docker run -p 3000:80 gestao-frontend
+```
 
 ``rodar localmente`` 
 # Backend
@@ -48,11 +49,12 @@ cd gestao_api
 npm install
 npm run dev
 
-🔌 Conexão com MongoDB
+## Conexão com MongoDB
 No backend (gestao_api_backend/index.js), substitua a URI pela sua no MongoDB Atlas:
 
-🔐 Firebase Auth
+## Firebase Auth
 No frontend (gestao_api/firebase-config.js), preencha com suas credenciais do Firebase:
+
 
 📬 Testar a API com Postman
 
@@ -100,7 +102,7 @@ Headers:
 uid: abc123xyzUID
 
 
-# test 
+## test 
 ``/gestao_api_backend`` - Entrar no backend - cd gestao_api_backend  <br>
  1 - Instalar o pacote jest - npm install --save-dev jest <br>
  2 - Instalar o pacote supertest - npm install --save-dev supertest <br>
