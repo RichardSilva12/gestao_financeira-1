@@ -1,12 +1,45 @@
-# React + Vite
+# 📊 Interface Web - Sistema de Gestão Financeira
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este é o front-end do projeto **Sistema de Gestão Financeira**, construído em **React** com **Firebase Auth** para autenticação e integração com uma API Flask que utiliza **MongoDB** como banco de dados.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📁 Estrutura do Projeto
 
-## Expanding the ESLint configuration
+Localizado dentro da pasta `/gestao_api`, o front-end possui a seguinte organização:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🚀 Funcionalidades
+
+- **Registro de usuário** com Firebase Authentication  
+- **Login seguro** e persistente  
+- **Proteção de rotas**: apenas usuários autenticados acessam o Dashboard  
+- **Dashboard**  
+   A tela de Dashboard é o coração do sistema de gestão financeira. Ao se autenticar com Firebase, o usuário é redirecionado para esse painel, onde poderá:
+
+  - **Adicionar transações financeiras** (receitas ou despesas)  
+  - **Classificar por categoria** (como alimentação, transporte, salário)  
+  - **Filtrar por tipo e categoria**  
+  - **Visualizar um relatório mensal** com saldo, totais e lista das transações  
+  - **Excluir qualquer transação** já registrada  
+  - Todos os dados são enviados e recebidos da [API] via `fetch`, com headers autenticados (accessToken e uid).  
+
+   As transações são armazenadas no MongoDB via backend.
+
+---
+
+## 🐳 Docker e Deploy
+
+O projeto inclui um `Dockerfile` que realiza o build da aplicação React e utiliza o **Nginx** para servir os arquivos estáticos. O Nginx está configurado para suportar **rotas SPA** e aplicar cache a arquivos estáticos, garantindo melhor desempenho em produção.
+
+---
+
+## 🔧 Como Rodar o Projeto
+
+### Executando localmente
+
+```bash
+cd gestao_api/frontend
+npm install
+npm run dev
