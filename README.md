@@ -5,10 +5,6 @@ Sistema de gestão financeira com frontend em React + Firebase e backend em Node
 
 ---
 
-## 📁 Estrutura do Projeto
-
----
-
 ## 🚀 Como Rodar o Projeto
 
 ### 🔧 Pré-requisitos
@@ -49,59 +45,11 @@ cd gestao_api
 npm install
 npm run dev
 
-## Conexão com MongoDB
-No backend (gestao_api_backend/index.js), substitua a URI pela sua no MongoDB Atlas:
-
-## Firebase Auth
-No frontend (gestao_api/firebase-config.js), preencha com suas credenciais do Firebase:
-
-
 # 📬 Testar a API com Postman
 
-Abrir o Postman e fazer requisições
-**GET /api/transacoes**
-URL: http://localhost:5000/api/transacoes <br>
+Documentação direta do postman:
 
-Método: GET <br>
-
-Headers: <br>
-
-uid: <cole aqui o UID do Firebase do usuário><br>
-
-Exemplo de Header no Postman:<br>
-
-Key	          | Value <br>
-uid         	abc123xyzUID<br><br>
-
- **POST /api/transacoes**<br>
-URL: http://localhost:5000/api/transacoes<br>
-
-Método: POST<br>
-
-Headers:<br>
-
-Content-Type: application/json<br>
- 
-json <br>
- {<br>
-  "uid": "abc123xyzUID",<br>
-  "descricao": "Salário",<br>
-  "valor": 3000,<br>
-  "tipo": "receita",<br>
-  "data": "2025-05-28",<br>
-  "categoria": "trabalho"<br>
-}<br>
-
-<br>
-  **DELETE /api/transacoes/:id**<br>
-URL: http://localhost:5000/api/transacoes/SEU_ID<br>
-
-Método: DELETE<br> 
-
-Headers:<br>
-
-uid: abc123xyzUID<br>
-
+https://www.postman.com/matheusleonardi/gestao-financeira/collection/qhww3eq/gestao-financeira-api?action=share&creator=43094961
 
 ## test 
 ``/gestao_api_backend`` - Entrar no backend - cd gestao_api_backend  <br>

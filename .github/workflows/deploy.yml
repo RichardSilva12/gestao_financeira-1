@@ -1,9 +1,9 @@
-name: Deploy Docker Images to Docker Hub
+name: Deploy Docker Images para Docker Hub
 
 on:
   push:
     branches:
-      - main  # Executa apenas quando houver push na main
+      - main  
 
 jobs:
   deploy:
