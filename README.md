@@ -38,13 +38,13 @@ docker build -t gestao-frontend .
 docker run -p 3000:80 gestao-frontend
 ```
 
-``rodar localmente`` 
-# Backend
+# rodar localmente 
+## Backend
 cd gestao_api_backend
 npm install
 node index.js
 
-# Frontend
+## Frontend
 cd gestao_api
 npm install
 npm run dev
@@ -56,50 +56,51 @@ No backend (gestao_api_backend/index.js), substitua a URI pela sua no MongoDB At
 No frontend (gestao_api/firebase-config.js), preencha com suas credenciais do Firebase:
 
 
-📬 Testar a API com Postman
+# 📬 Testar a API com Postman
 
 Abrir o Postman e fazer requisições
 **GET /api/transacoes**
-URL: http://localhost:5000/api/transacoes
+URL: http://localhost:5000/api/transacoes <br>
 
-Método: GET
+Método: GET <br>
 
-Headers:
+Headers: <br>
 
-uid: <cole aqui o UID do Firebase do usuário>
+uid: <cole aqui o UID do Firebase do usuário><br>
 
-Exemplo de Header no Postman:
+Exemplo de Header no Postman:<br>
 
-Key	          | Value 
-uid         	abc123xyzUID
+Key	          | Value <br>
+uid         	abc123xyzUID<br><br>
 
- **POST /api/transacoes**
-URL: http://localhost:5000/api/transacoes
+ **POST /api/transacoes**<br>
+URL: http://localhost:5000/api/transacoes<br>
 
-Método: POST
+Método: POST<br>
 
-Headers:
+Headers:<br>
 
-Content-Type: application/json
+Content-Type: application/json<br>
  
-json 
- {
-  "uid": "abc123xyzUID",
-  "descricao": "Salário",
-  "valor": 3000,
-  "tipo": "receita",
-  "data": "2025-05-28",
-  "categoria": "trabalho"
-}
+json <br>
+ {<br>
+  "uid": "abc123xyzUID",<br>
+  "descricao": "Salário",<br>
+  "valor": 3000,<br>
+  "tipo": "receita",<br>
+  "data": "2025-05-28",<br>
+  "categoria": "trabalho"<br>
+}<br>
 
-**DELETE /api/transacoes/:id**
-URL: http://localhost:5000/api/transacoes/SEU_ID
+<br>
+  **DELETE /api/transacoes/:id**<br>
+URL: http://localhost:5000/api/transacoes/SEU_ID<br>
 
-Método: DELETE
+Método: DELETE<br> 
 
-Headers:
+Headers:<br>
 
-uid: abc123xyzUID
+uid: abc123xyzUID<br>
 
 
 ## test 
