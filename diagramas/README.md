@@ -61,3 +61,7 @@ Um **Usuario** utiliza uma instância de Autenticacao para login e registro.
 Um **Usuario** pode possuir várias Transacoes.
 
 O **Dashboard** gerencia as Transacoes e utiliza informações do Usuario.
+
+### para rodar 
+ - instalar a extensao PlantUML 
+ - Clique com o botão direito no editor e selecione "Preview Current    Diagram" ou use o atalho CTRL Alt + D
