@@ -1,5 +1,12 @@
-﻿
-# 💸 gestao_financeira
+﻿# Alunos
+    - Richard Peghin da Silva
+    - Mateus Betini de Freitas
+    - Matheus Leonardi Pereira Bento
+    - Tiago Gabriel Carmelino 
+
+    Professor Orientando 
+    prof. Victor Hugo 
+## 💸 gestao_financeira
 
 Sistema de gestão financeira com frontend em React + Firebase e backend em Node.js + MongoDB, utilizando Docker para facilitar a execução.
 
