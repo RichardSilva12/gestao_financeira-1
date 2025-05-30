@@ -23,34 +23,16 @@ Sistema de gestão financeira com frontend em React + Firebase e backend em Node
 
 ---
 
-### 🐳 Rodar com Docker (Recomendado)
-
-> Rode tudo com apenas alguns comandos!
-
-1. Abra o terminal na raiz do projeto e execute:
-
-```bash
-# Backend
-cd gestao_api_backend
-docker build -t gestao-backend .
-docker run -p 5000:5000 gestao-backend
-
-# Em outro terminal, para o frontend
-cd gestao_api
-docker build -t gestao-frontend .
-docker run -p 3000:80 gestao-frontend
-```
-
 # rodar localmente 
 ## Backend
-cd gestao_api_backend
-npm install
-node index.js
+cd gestao_api_backend<br>
+npm install<br>
+node index.js<br>
 
 ## Frontend
-cd gestao_api
-npm install
-npm run dev
+cd gestao_api<br>
+npm install<br>
+npm run dev<br>
 
 # 📬 Testar a API com Postman
 
@@ -66,7 +48,7 @@ https://www.postman.com/matheusleonardi/gestao-financeira/collection/qhww3eq/ges
  4 - npm test <br>
 <br> <br>
 
-# 📦 Rodar Projeto usando Docker
+# 🐳  Rodar Projeto usando Docker
 
 Este projeto utiliza **Docker** para facilitar a execução do frontend e backend.<br>
 
