@@ -66,5 +66,32 @@ https://www.postman.com/matheusleonardi/gestao-financeira/collection/qhww3eq/ges
  4 - npm test <br>
 <br> <br>
 
-# rodar projeto usando docker <br>
-- docker compose up --build -d
+# 📦 Rodar Projeto usando Docker
+
+Este projeto utiliza **Docker** para facilitar a execução do frontend e backend.<br>
+
+## 🛠️ Pré-requisitos
+
+Antes de iniciar, certifique-se de ter o **Docker** instalado em sua máquina:
+
+👉 [Download Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
+---
+
+## 📁 Passos para executar o projeto
+
+1. **Clone ou baixe** este repositório na sua máquina.
+2. Abra o terminal (Prompt de Comando, PowerShell ou Terminal do VS Code).
+3. Navegue até a pasta raiz do projeto. Por exemplo:
+
+   ```bash
+   cd C:\Users\SeuUsuario\Desktop\gestao_financeira
+
+   -> Execute o comando
+   docker compose up --build -d 
+
+   -> Acesse o navegador com:
+   http://localhost:3000
+
+   ````
+
